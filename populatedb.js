@@ -5,7 +5,7 @@ console.log(
   );
   
   // Get arguments passed on command line
-  const userArgs = process.argv.slice(2);
+  const userArgs = process.argv.slice(2); 
   
   const Book = require("./models/book");
   const Author = require("./models/author");
