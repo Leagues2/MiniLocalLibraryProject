@@ -33,23 +33,71 @@ exports.author_detail = asyncHandler(async (req, res, next) => {
         author_books : allBooksByAuthor
     })
   });
-// Display detail page for a specific Author.
-exports.author_create_get = asyncHandler(async (req,res,next)=>
-{
-    res.send(`NOT IMPLEMENTED : Auhtor detail : ${req.params.id}`)
-})
-
 //display author create form on GET
-exports.author_create_get = asyncHandler(async (req,res,next)=>
+exports.author_create_get =  (req,res,next)=>
 {
-    res.send("NOT IMPLEMENTED : Author create get")
-})
+    res.render("author_form" , {title: "Create Author"})
+}
 
 // Handle Author create on POST.
-exports.author_create_post = asyncHandler(async (req,res,next)=>
+
+exports.author_create_post = [
+      // Validate and sanitize fields.
+    body("first_name")
+    .trim()
+    .isLength({min:1 , max : 100})
+    .escape()
+    .withMessage("First name Must be specified.")
+    .isAlphanumeric()
+    .withMessage("The first name has non-alphanumeric characters"),
+    body("family_name")
+    .trim()
+    .isLength({min:1 , max : 100})
+    .escape()
+    .withMessage("family name Must be specified.")
+    .isAlphanumeric()
+    .withMessage("The family name has non-alphanumeric characters"),
+    body("date_of_birth")
+    .optional({values : "falsy"})
+    .isISO8601()
+    .toDate(),
+    body("date_of_death")
+    .optional({values : "falsy"})
+    .isISO8601()
+    .toDate(),
+    
+// Process request after validation and sanitization.   
+asyncHandler(async (req,res,next)=>
 {
-    res.send("NOT IMPLEMENTED: Author create POST");
-})
+    // Extract the validation errors from a request.
+    const errors = validationResult(req)
+   // Create Author object with escaped and trimmed data
+    const author = new Author({
+        first_name : req.body.first_name , 
+        family_name : req.body.family_name,
+        date_of_birth : req.body.date_of_birth,
+        date_of_death : req.body.date_of_death,
+    })
+    if(!errors.isEmpty)
+    {
+       // There are errors. Render form again with sanitized values/errors messages.
+       res.render("author_form",{
+        title : "Create author", 
+        author : author,
+        errors : errors ,
+    })
+    return 
+    }
+    else
+    {
+    //Either to check if the author name already exist in the db or just have multiple authors
+    // Data from form is valid.
+    // Save author.
+      await author.save();
+      // Redirect to new author record.
+      res.redirect(author.url);
+    }
+})]
 
 //Display Author delete from GET
 exports.author_delete_get = asyncHandler(async (req,res,next)=>
