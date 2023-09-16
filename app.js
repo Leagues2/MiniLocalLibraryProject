@@ -40,8 +40,8 @@ app.use('/users', usersRouter);
 app.use('/catalog', catalogRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+app.use(function(req, res) {
+  return res.end("404 Not Found");
 });
 
 // error handler
@@ -56,3 +56,4 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+

@@ -12,6 +12,8 @@ const AuthorSchema = new Schema({
 
 // Virtual for Author's Full name
 
+
+
 AuthorSchema.virtual("date_of_birth_formatted").get(function() {
   if (this.date_of_birth == null) {
     return ""; // Return an empty string if date_of_death is null or undefined
@@ -38,7 +40,14 @@ AuthorSchema.virtual("date_of_birth_formatted").get(function() {
   return `${month} ${day}${daySuffix}, ${year}`;
 });
 
-
+AuthorSchema.virtual("name").get(function(){
+  let fullname = ''
+  if(this.first_name && this.family_name )
+  {
+    fullname = `${this.first_name} ${this.family_name}`
+  }
+  return fullname
+})
 
 AuthorSchema.virtual("date_of_death_formatted").get(function() {
   if (this.date_of_death == null) {
