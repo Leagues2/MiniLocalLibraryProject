@@ -41,7 +41,6 @@ exports.book_list = asyncHandler(async (req, res, next) => {
 
   res.render('book_list' , {title : "Book List" , book_list : allBooks})
 });
-
 // Display detail page for a specific book.
 exports.book_detail = asyncHandler(async (req, res, next) => {
   // Get details of books, book instances for specific book
@@ -181,3 +180,4 @@ exports.book_update_get = asyncHandler(async (req, res, next) => {
 exports.book_update_post = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: Book update POST");
 });
+
