@@ -1,10 +1,10 @@
-require('dotenv').config()
 const createError = require('http-errors');
+require('dotenv').config()
 const express = require('express');
 //mongoose connection:
 const mongoose = require('mongoose')
 mongoose.set("strictQuery" , false)
-const mongoDB = process.env.DB_URL
+const mongoDB = process.env.DB_URI
 
 main().catch((error)=>
   console.log(error)
