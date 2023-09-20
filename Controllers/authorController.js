@@ -118,6 +118,7 @@ exports.author_delete_get = asyncHandler(async (req, res, next) => {
       author_books : allBooksByAuthor
     });
   });
+  
 // handle Author delete on post
 exports.author_delete_post = asyncHandler(async (req,res,next)=>
 {
@@ -144,11 +145,67 @@ exports.author_delete_post = asyncHandler(async (req,res,next)=>
 // Display Author update form on GET.
 exports.author_update_get = asyncHandler(async (req,res,next)=>
 {
-    res.send(`NOT IMPLEMENTED: Author update get`)
+    const author = await Author.find(req.params.id).exec()
+
+    if(author === null)
+    {
+      const err = new Error ("Author not found")
+      err.status = 404
+      return next(err)
+    }
+
+    res.render("author_form" , {title : "Update Author" , author : author})
 })
 
 // handle Author update on post.
-exports.author_update_post = asyncHandler(async (req,res,next)=>
-{
-    res.send(`NOT IMPLEMENTED: Author update post`)
-})
+exports.author_update_post =
+[
+  body("first_name")
+  .trim()
+  .isLength({min:1 , max : 100})
+  .escape()
+  .withMessage("First name Must be specified.")
+  .isAlphanumeric()
+  .withMessage("The first name has non-alphanumeric characters"),
+  body("family_name")
+  .trim()
+  .isLength({min:1 , max : 100})
+  .escape()
+  .withMessage("family name Must be specified.")
+  .isAlphanumeric()
+  .withMessage("The family name has non-alphanumeric characters"),
+  body("date_of_birth")
+  .optional({values : "falsy"})
+  .isISO8601()
+  .toDate(),
+  body("date_of_death")
+  .optional({values : "falsy"})
+  .isISO8601()
+  .toDate(),
+asyncHandler(async (req,res,next)=>
+{// Extract the validation errors from a request.
+  const errors = validationResult(req)
+  // Create Author object with escaped and trimmed data
+   const author = new Author({
+       first_name : req.body.first_name , 
+       family_name : req.body.family_name,
+       date_of_birth : req.body.date_of_birth,
+       date_of_death : req.body.date_of_death,
+       _id :req.params.id
+   })
+   if(!errors.isEmpty)
+   {
+      // There are errors. Render form again with sanitized values/errors messages.
+      res.render("author_form",{
+       title : "update author", 
+       author : author,
+       errors : errors ,
+   })
+   return 
+   }
+   else
+   {
+    const updatedAuhtor = await Author.findByIdAndUpdate(req.params.id , author  , {})
+    res.render(updatedAuhtor.url)
+   }
+})]
