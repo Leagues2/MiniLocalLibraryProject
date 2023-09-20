@@ -8,9 +8,8 @@ A UML diagram showing the relation of database entities in this example reposito
 
 For more information see the associated MDN tutorial home page.
 
-Note The auth branch in this repository implements an unsupported and undocumented version of the library with User Authentication and Authorization. This may be a useful starting point for some users.
 
-Quick Start
+## Quick Start
 To get this project up and running locally on your computer:
 
 Set up a Node.js development environment.
