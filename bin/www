@@ -7,7 +7,6 @@
 var app = require('../app');
 var debug = require('debug')('express-locallibrary-tutorial:server');
 var http = require('http');
-host = '0.0.0.0'
 /**
  * Get port from environment and store in Express.
  */
@@ -25,9 +24,9 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port,host,()=>
+server.listen(port,"0.0.0.0",()=>
 {
-  console.log(`server is listening to http://${host}:${process.env.PROD_PORT}`)
+  console.log(`server is listening to http://0.0.0.0:${process.env.PROD_PORT}`)
 });
 server.on('error', onError);
 server.on('listening', onListening);
