@@ -145,7 +145,7 @@ exports.author_delete_post = asyncHandler(async (req,res,next)=>
 // Display Author update form on GET.
 exports.author_update_get = asyncHandler(async (req,res,next)=>
 {
-    const author = await Author.find(req.params.id).exec()
+    const author = await Author.findById(req.params.id).exec()
 
     if(author === null)
     {
