@@ -205,7 +205,7 @@ asyncHandler(async (req,res,next)=>
    }
    else
    {
-    const updatedAuhtor = await Author.findByIdAndUpdate(req.params.id , author  , {})
+    const updatedAuhtor = await Author.findByIdAndUpdate(req.params.id , author  )
     res.render(updatedAuhtor.url)
    }
 })]
