@@ -7,7 +7,7 @@
 const app = require('../app');
 const debug = require('debug')('express-locallibrary-tutorial:server');
 const http = require('http');
-const hostname = '127.0.0.1';
+const hostname = '0.0.0.0';
 /**
  * Get port from environment and store in Express.
  */
@@ -25,7 +25,7 @@ const server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port, hostname, () => {
+server.listen(port, hostname, function()  {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
 server.on('error', onError);
