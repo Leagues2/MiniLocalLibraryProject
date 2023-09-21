@@ -4,7 +4,7 @@ const express = require('express');
 //mongoose connection:
 const mongoose = require('mongoose')
 mongoose.set("strictQuery" , false)
-const mongoDB = process.env.DB_URI
+const mongoDB = process.env.MONGODB_URL
 
 main().catch((error)=>
   console.log(error)
